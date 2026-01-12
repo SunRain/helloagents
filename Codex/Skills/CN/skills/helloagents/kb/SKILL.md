@@ -233,6 +233,7 @@ for each 选定的方案包:
 
 ```
 ✅【HelloAGENTS】- 知识库命令完成
+[状态: MODE=交互确认 | MODE_FULL_AUTH=false | MODE_PLANNING=false | MODE_EXECUTION=false | CREATED_PACKAGE=无 | CURRENT_PACKAGE=无]
 
 - 📚 知识库状态: [已创建/已更新/已重建]
 - 📊 操作摘要: 扫描X模块, 创建/更新Y文档
