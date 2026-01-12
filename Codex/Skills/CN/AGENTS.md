@@ -203,7 +203,7 @@ OUTPUT_LANGUAGE: 简体中文
 
 1. 格式强制：任何代码/文档改动完成后，MUST 使用模板 A/B/C 之一
 2. 禁止自由文本：NEVER 使用无格式文本描述任务完成
-3. 验证步骤：输出前 MUST 自检：模板类型 → 状态符号 → 【HelloAGENTS】标识 → 清单格式
+3. 验证步骤：输出前 MUST 自检：模板类型 → 状态符号 → 【HelloAGENTS】标识 → 状态行 → 清单格式
 4. 写入验证：写入操作后 MUST 重述：改动内容 + 文件清单 + 验证结果
 
 #### 6.1 基础模板
@@ -211,6 +211,7 @@ OUTPUT_LANGUAGE: 简体中文
 **模板 A - 阶段输出（Stage Output）**
 ```
 {状态符号}【HelloAGENTS】- {场景名称}
+[状态: MODE={交互确认|推进-全授权|推进-规划|执行命令} | MODE_FULL_AUTH={true/false} | MODE_PLANNING={true/false} | MODE_EXECUTION={true/false} | CREATED_PACKAGE={plan/...|history/...|无} | CURRENT_PACKAGE={plan/...|history/...|无}]
 
 {内容区: ≤5条要点或问题描述}
 
@@ -236,6 +237,7 @@ OUTPUT_LANGUAGE: 简体中文
 **模板 B - 交互询问（Interactive Query）**
 ```
 {状态符号}【HelloAGENTS】- {场景名称}
+[状态: MODE={交互确认|推进-全授权|推进-规划|执行命令} | MODE_FULL_AUTH={true/false} | MODE_PLANNING={true/false} | MODE_EXECUTION={true/false} | CREATED_PACKAGE={plan/...|history/...|无} | CURRENT_PACKAGE={plan/...|history/...|无}]
 
 {情况说明: ≤3句}
 
@@ -252,6 +254,12 @@ OUTPUT_LANGUAGE: 简体中文
 - 状态符号：通常为 ❓；警告类可用 ⚠；错误类可用 ❌
 - 选项数量：2-4 个
 - 选项说明：每项 ≤1 句
+
+**状态行规范（模板 A/B 必填）:**
+- 键顺序固定：MODE → MODE_FULL_AUTH → MODE_PLANNING → MODE_EXECUTION → CREATED_PACKAGE → CURRENT_PACKAGE
+- MODE 推导优先级：MODE_FULL_AUTH=true → 推进-全授权；否则 MODE_PLANNING=true → 推进-规划；否则 MODE_EXECUTION=true → 执行命令；否则 → 交互确认
+- 布尔值：统一使用 `true/false`（小写）
+- 路径：仅允许相对路径（`plan/...` 或 `history/...`）；未设置统一写 `无`；禁止输出绝对路径
 
 ---
 
@@ -496,6 +504,9 @@ MODE_PLANNING: 规划命令激活状态
 MODE_EXECUTION: 执行命令激活状态
 ```
 
+**输出要求（状态显式化）:**
+- 使用 G6.1 模板 A/B 输出时，必须包含状态行，并与上述变量保持一致（未设置写 `无`）
+
 ### G13 | MCP Rules (MCP 调用规则)
 
  **目标**
@@ -689,6 +700,7 @@ MODE_EXECUTION: 执行命令激活状态
 - 输出格式:
   ```
   ✅【HelloAGENTS】- 微调模式完成
+  [状态: MODE=交互确认 | MODE_FULL_AUTH=false | MODE_PLANNING=false | MODE_EXECUTION=false | CREATED_PACKAGE=无 | CURRENT_PACKAGE=无]
 
   - ✅ 改动: [修改内容简述]
   - 📁 涉及文件: [文件名称]
@@ -720,6 +732,7 @@ MODE_EXECUTION: 执行命令激活状态
 - 输出格式:
   ```
   ✅【HelloAGENTS】- 轻量迭代完成
+  [状态: MODE=交互确认 | MODE_FULL_AUTH=false | MODE_PLANNING=false | MODE_EXECUTION=false | CREATED_PACKAGE=无 | CURRENT_PACKAGE=无]
 
   - ✅ 执行结果: 任务X/Y完成
   - 📦 方案包: 已迁移至 history/YYYY-MM/...
@@ -780,6 +793,7 @@ MODE_EXECUTION: 执行命令激活状态
 - 模糊边界 → 输出上下文确认格式:
   ```
   ❓【HelloAGENTS】- 上下文确认
+  [状态: MODE=交互确认 | MODE_FULL_AUTH=false | MODE_PLANNING=false | MODE_EXECUTION=false | CREATED_PACKAGE=无 | CURRENT_PACKAGE=无]
 
   检测到新输入，当前任务尚未完成。
   [1] 继续当前任务 - [当前任务简述]
@@ -804,6 +818,7 @@ MODE_EXECUTION: 执行命令激活状态
 **授权询问格式:**
 ```
 ❓【HelloAGENTS】- 命令确认
+[状态: MODE=交互确认 | MODE_FULL_AUTH=false | MODE_PLANNING=false | MODE_EXECUTION=false | CREATED_PACKAGE=无 | CURRENT_PACKAGE=无]
 
 即将执行 [命令名称]:
 - 执行内容: [命令动作简述]
@@ -838,6 +853,7 @@ MODE_EXECUTION: 执行命令激活状态
 **全授权命令完成:**
 ```
 ✅【HelloAGENTS】- 全授权命令完成
+[状态: MODE=推进-全授权 | MODE_FULL_AUTH=true | MODE_PLANNING=false | MODE_EXECUTION=false | CREATED_PACKAGE={plan/...|无} | CURRENT_PACKAGE={history/...|无}]
 
 - ✅ 执行路径: 需求分析 → 方案设计 → 开发实施
 - 📊 执行结果: 需求评分X/10, 任务Y/Z完成
@@ -859,6 +875,7 @@ MODE_EXECUTION: 执行命令激活状态
 **规划命令完成:**
 ```
 ✅【HelloAGENTS】- 规划命令完成
+[状态: MODE=推进-规划 | MODE_FULL_AUTH=false | MODE_PLANNING=true | MODE_EXECUTION=false | CREATED_PACKAGE={plan/...|无} | CURRENT_PACKAGE=无]
 
 - ✅ 执行路径: 需求分析 → 方案设计
 - 📋 需求分析: 评分X/10, [关键目标]
@@ -877,6 +894,7 @@ MODE_EXECUTION: 执行命令激活状态
 **执行命令完成:**
 ```
 ✅【HelloAGENTS】- 执行命令完成
+[状态: MODE=执行命令 | MODE_FULL_AUTH=false | MODE_PLANNING=false | MODE_EXECUTION=true | CREATED_PACKAGE=无 | CURRENT_PACKAGE={history/...|无}]
 
 - ✅ 执行方案: [方案包名称]
 - 📊 执行结果: 任务Y/Z完成

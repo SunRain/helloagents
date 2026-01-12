@@ -26,6 +26,92 @@
 
 ---
 
+## Skill 异常示例（当前规范）
+
+> 说明：以下示例用于展示异常/失败/取消路径的“模板填充方式”，状态行取值以当次执行为准（此处为示例值）。
+
+### 开发实施：方案包不存在
+
+```
+❌【HelloAGENTS】- 执行错误
+[状态: MODE=执行命令 | MODE_FULL_AUTH=false | MODE_PLANNING=false | MODE_EXECUTION=true | CREATED_PACKAGE=无 | CURRENT_PACKAGE=无]
+
+错误: 未找到可执行的方案包
+- 原因: plan/目录为空或不存在
+
+────
+📁 变更: 无
+
+🔄 下一步: 请先使用 ~plan 命令创建方案，或进入方案设计阶段
+```
+
+### 开发实施：方案包不完整
+
+```
+❌【HelloAGENTS】- 执行错误
+[状态: MODE=执行命令 | MODE_FULL_AUTH=false | MODE_PLANNING=false | MODE_EXECUTION=true | CREATED_PACKAGE=无 | CURRENT_PACKAGE=无]
+
+错误: 方案包不完整
+- 方案包: [方案包名称]
+- 缺失文件: [why.md/how.md/task.md]
+
+────
+📁 变更: 无
+
+🔄 下一步: 请补充缺失文件或重新创建方案包
+```
+
+### 开发实施：阻断性测试失败（需用户决策）
+
+```
+❌【HelloAGENTS】- 阻断性测试失败
+[状态: MODE=执行命令 | MODE_FULL_AUTH=false | MODE_PLANNING=false | MODE_EXECUTION=true | CREATED_PACKAGE=无 | CURRENT_PACKAGE=plan/YYYYMMDDHHMM_<feature>/]
+
+⛔ 核心功能测试失败，必须处理后才能继续:
+- 失败测试: [测试名称]
+- 错误信息: [错误摘要]
+
+[1] 修复后重试 - 尝试修复问题后重新测试
+[2] 跳过继续 - 风险自负，忽略此错误继续执行
+[3] 终止执行 - 停止开发实施
+
+────
+🔄 下一步: 请输入序号选择
+```
+
+### 开发实施：知识库同步失败（需用户决策）
+
+```
+⚠️【HelloAGENTS】- 知识库同步
+[状态: MODE=执行命令 | MODE_FULL_AUTH=false | MODE_PLANNING=false | MODE_EXECUTION=true | CREATED_PACKAGE=无 | CURRENT_PACKAGE=plan/YYYYMMDDHHMM_<feature>/]
+
+知识库同步过程中部分操作失败:
+- [失败项1]: [原因]
+- [失败项2]: [原因]
+
+[1] 重试 - 重新执行失败的同步操作
+[2] 跳过 - 标记未同步，继续后续步骤
+[3] 终止 - 停止执行，保留当前进度
+
+────
+🔄 下一步: 请输入序号选择
+```
+
+### 需求分析：用户取消
+
+```
+🚫【HelloAGENTS】- 已取消
+[状态: MODE=交互确认 | MODE_FULL_AUTH=false | MODE_PLANNING=false | MODE_EXECUTION=false | CREATED_PACKAGE=无 | CURRENT_PACKAGE=无]
+
+已取消: 需求分析
+────
+📁 变更: 无
+
+🔄 下一步: 可重新描述需求或进行其他操作
+```
+
+---
+
 ## 原异常示例段落（历史示例）
 
 > 说明：以下内容来自历史版本的异常示例段落，仅作为示例库保留；实际输出请遵循合并后的模板 A/B/C 与场景映射规则。
@@ -122,4 +208,3 @@
 
 请补充后回复，或输入"取消"终止当前命令。
 ```
-
