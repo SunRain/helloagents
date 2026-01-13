@@ -61,6 +61,25 @@
 🔄 下一步: 请补充缺失文件或重新创建方案包
 ```
 
+### 开发实施：历史归档同名冲突（需用户决策）
+
+```
+⚠️【HelloAGENTS】- 历史归档冲突
+[状态: MODE=交互确认 | MODE_FULL_AUTH=false | MODE_PLANNING=false | MODE_EXECUTION=false | CREATED_PACKAGE=无 | CURRENT_PACKAGE=plan/YYYYMMDDHHMM_<feature>/]
+
+⚠️ 危险操作检测！
+操作类型: 覆盖/替换 history/ 归档（同名冲突）
+影响范围: history/YYYY-MM/YYYYMMDDHHMM_<feature>/
+风险评估: 覆盖会导致历史记录不可逆丢失
+
+[1] 备份并继续 - 将旧目录重命名为 `YYYYMMDDHHMM_<feature>_bak_YYYYMMDDHHMM/` 后再迁移
+[2] 覆盖继续 - 丢弃旧目录（风险自负）
+[3] 取消 - 保留在 plan/ 目录，后续手动处理
+
+────
+🔄 下一步: 请输入序号选择
+```
+
 ### 开发实施：阻断性测试失败（需用户决策）
 
 ```

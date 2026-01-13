@@ -100,7 +100,7 @@ helloagents/              # HelloAGENTS 工作空间（SSOT）
 - 提取 ADR 信息（在迁移前从 `plan/YYYYMMDDHHMM_<feature>/how.md` 的 **架构决策 ADR** 章节读取）
 - 在 `wiki/arch.md` 的 **重大架构决策** 表格中追加
 - 链接到 `history/YYYY-MM/YYYYMMDDHHMM_<feature>/how.md#adr-xxx`
-- **注意:** 此时写入的 history/ 链接为预计算路径
+- **注意:** 此时写入的 history/ 链接为预计算路径；迁移完成后必须执行链接校验与修复（见 `develop` Skill「步骤12: 迁移已执行方案包至history/」的“迁移后链接校验”）
 
 **步骤4 - 清理:**
 - 删除过时信息、废弃API、已删除模块
@@ -183,7 +183,9 @@ for each 选定的方案包:
   2. 迁移至历史记录目录:
      - 从 plan/ 移动到 history/YYYY-MM/
      - YYYY-MM 从方案包目录名提取
-     - 同名冲突: 强制覆盖
+     - 同名冲突（高风险）:
+       - 默认策略（推荐）: **备份并继续**（将已存在的目录重命名为 `YYYYMMDDHHMM_<feature>_bak_YYYYMMDDHHMM/` 后再迁移）
+       - 如用户坚持覆盖旧目录: 必须按 G9.1 输出高风险确认后才允许执行
 
   3. 更新历史记录索引: history/index.md（标注"未执行"）
 ```
